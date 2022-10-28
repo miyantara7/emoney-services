@@ -122,6 +122,7 @@ func (u *EMoneyDB) TransactionHistory(req *model.GetTrxHist) ([]*entity.Transact
 
 	list := []*entity.TransactionHistory{}
 	if err := u.dbEMoney.Debug().Where("user_id = ? and no_kartu = ?", req.UserId, req.NoKartu).
+		Order("created_date DESC").
 		Find(&list).Error; err != nil {
 		return nil, status.Errorf(codes.Internal, err.Error())
 	}
