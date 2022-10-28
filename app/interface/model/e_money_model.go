@@ -28,3 +28,21 @@ type DataUser struct {
 	NoIdentitas string
 	TglLahir    string
 }
+
+type GetBalance struct {
+	UserId   string
+	UserName string
+	NoKartu  string
+}
+
+type CreateEmoney struct {
+	UserId   string
+	UserName string
+	Saldo    string
+}
+
+type GetTrxHist struct {
+	UserId   string
+	UserName string
+	NoKartu  string
+}

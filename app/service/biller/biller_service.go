@@ -19,19 +19,46 @@ func NewBillerService(uc ucBiller.BillerUsecase) *BillerService {
 }
 
 func (u *BillerService) ListBiller(ctx context.Context, req *empty.Empty) (*proto.BillerResponse, error) {
-	_, err := u.uc.ListBiller(req)
+	res, err := u.uc.ListBiller()
 	if err != nil {
 		return nil, err
 	}
 
-	return nil, nil
+	return res.(*proto.BillerResponse), nil
 }
 
-func (u *BillerService) DetailBiller(ctx context.Context, req *empty.Empty) (*proto.Biller, error) {
-	_, err := u.uc.ListBiller(req)
+func (u *BillerService) DetailBiller(ctx context.Context, req *proto.BillerRequest) (*proto.Biller, error) {
+	res, err := u.uc.DetailBiller(req)
 	if err != nil {
 		return nil, err
 	}
 
-	return nil, nil
+	return res.(*proto.Biller), nil
+}
+
+func (u *BillerService) GetBalance(ctx context.Context, req *proto.GetBalanceRequest) (*proto.GetBalanceResponse, error) {
+	res, err := u.uc.GetBalance(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return res.(*proto.GetBalanceResponse), nil
+}
+
+func (u *BillerService) GetTrxHist(ctx context.Context, req *proto.GetTrxHistReq) (*proto.GetTrxHistResponse, error) {
+	res, err := u.uc.TransactionHistory(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return res.(*proto.GetTrxHistResponse), nil
+}
+
+func (u *BillerService) CreateEMoney(ctx context.Context, req *proto.CreateEMoneyRequest) (*proto.CreateEMoneyResponse, error) {
+	res, err := u.uc.CreateEMoney(req)
+	if err != nil {
+		return nil, err
+	}
+
+	return res.(*proto.CreateEMoneyResponse), nil
 }

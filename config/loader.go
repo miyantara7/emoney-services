@@ -10,6 +10,7 @@ import (
 
 	"github.com/spf13/viper"
 
+	"github.com/vins7/emoney-service/config/client"
 	"github.com/vins7/emoney-service/config/db"
 	"github.com/vins7/emoney-service/config/server"
 )
@@ -17,6 +18,7 @@ import (
 type config struct {
 	Server   server.ServerList
 	Database db.DatabaseList
+	Client   client.ClientList
 }
 
 var cfg config
@@ -39,6 +41,14 @@ func init() {
 	viper.AddConfigPath(basepath + "/db")
 	viper.SetConfigType("yaml")
 	viper.SetConfigName("mysql.yml")
+	err = viper.MergeInConfig()
+	if err != nil {
+		panic(fmt.Errorf("Cannot read database config: %v", err))
+	}
+
+	viper.AddConfigPath(basepath + "/client")
+	viper.SetConfigType("yaml")
+	viper.SetConfigName("client.yml")
 	err = viper.MergeInConfig()
 	if err != nil {
 		panic(fmt.Errorf("Cannot read database config: %v", err))

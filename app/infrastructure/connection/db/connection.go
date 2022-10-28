@@ -12,13 +12,13 @@ import (
 )
 
 var tables = []interface{}{
-	&entity.DataUser{},
-	&entity.User{},
-	&entity.LoginHistory{},
+	&entity.EMoney{},
+	&entity.TransactionHistory{},
 }
 
 var (
-	UserDB *gorm.DB
+	UserDB   *gorm.DB
+	EMoneyDB *gorm.DB
 )
 
 func init() {
@@ -26,6 +26,11 @@ func init() {
 	cfg := config.GetConfig()
 
 	UserDB, err = Conn(cfg.Database.UserManagement)
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+
+	EMoneyDB, err = Conn(cfg.Database.EMoney)
 	if err != nil {
 		log.Fatalf(err.Error())
 	}

@@ -1,7 +1,7 @@
 package client
 
 import (
-	"fmt"
+	"encoding/json"
 
 	"github.com/go-resty/resty/v2"
 	"google.golang.org/grpc/codes"
@@ -30,12 +30,15 @@ func (r *BuilderResty) SetEndpoint(endpoint string) *BuilderResty {
 }
 
 func (b *BuilderResty) Get(response interface{}) error {
-	fmt.Println("Endpoint : ", b.Endpoint)
 	data, err := b.RestyClient.R().Get(b.Endpoint)
 	if err != nil {
 		return status.Error(codes.Internal, err.Error())
 	}
 
-	fmt.Println("DATA : ", data)
+	var body = data.Body()
+	if err := json.Unmarshal(body, response); err != nil {
+		return status.Error(codes.Internal, err.Error())
+
+	}
 	return nil
 }

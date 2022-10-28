@@ -1,27 +1,50 @@
 package client
 
-import "github.com/vins7/emoney-service/app/adapter/entity"
+import (
+	"github.com/vins7/emoney-service/app/adapter/entity"
+	"github.com/vins7/emoney-service/config"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+)
 
 type BillerClient struct {
-	Endpoint string
 }
 
 func NewBillerClient(endpoint string) *BillerClient {
-	return &BillerClient{
-		Endpoint: endpoint,
-	}
+	return &BillerClient{}
 }
 
-func (b *BillerClient) ListBiller() error {
+func (b *BillerClient) ListBiller() (interface{}, error) {
 
 	client := New()
-
-	client.SetParams("billerId", "1").SetEndpoint(b.Endpoint)
-
-	res := &entity.BillerResponse{}
-	if err := client.Get(res); err != nil {
-		return err
+	cfg := config.GetConfig()
+	res := &entity.ListBillerResponse{}
+	if err := client.SetEndpoint(cfg.Client.ListBiller).
+		Get(res); err != nil {
+		return nil, err
 	}
 
-	return nil
+	if res.Code != 200 {
+		return nil, status.Errorf(codes.Internal, res.Message)
+	}
+
+	return res, nil
+}
+
+func (b *BillerClient) DetailBiller(req *entity.BillerRequest) (*entity.DetailBillerResponse, error) {
+
+	client := New()
+	cfg := config.GetConfig()
+	res := &entity.DetailBillerResponse{}
+	if err := client.SetParams("billerId", req.ID).
+		SetEndpoint(cfg.Client.DetailBiller).
+		Get(res); err != nil {
+		return nil, err
+	}
+
+	if res.Code != 200 {
+		return nil, status.Errorf(codes.Internal, res.Message)
+	}
+
+	return res, nil
 }

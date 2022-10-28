@@ -8,16 +8,13 @@ import (
 	"os/signal"
 	"syscall"
 
-	dbUser "github.com/vins7/emoney-service/app/adapter/db/user_management"
-	"github.com/vins7/emoney-service/app/infrastructure/connection/db"
-	svcUser "github.com/vins7/emoney-service/app/service/user_management"
-	ucUser "github.com/vins7/emoney-service/app/usecase/user_management"
 	cfg "github.com/vins7/emoney-service/config"
-	proto "github.com/vins7/module-protos/app/interface/grpc/proto/user_management"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
 	clientBiller "github.com/vins7/emoney-service/app/adapter/client"
+	db "github.com/vins7/emoney-service/app/adapter/db/e_money"
+	conn "github.com/vins7/emoney-service/app/infrastructure/connection/db"
 	svcBiller "github.com/vins7/emoney-service/app/service/biller"
 	ucBiller "github.com/vins7/emoney-service/app/usecase/biller"
 	protoBiller "github.com/vins7/module-protos/app/interface/grpc/proto/e_money_service"
@@ -55,6 +52,12 @@ func RunServer() {
 }
 
 func Apply(server *grpc.Server) {
-	proto.RegisterUsermanagementServiceServer(server, svcUser.NewUserManagementService(ucUser.NewUserManagementUsecase(dbUser.NewUserManagementDB(db.UserDB))))
-	protoBiller.RegisterUsermanagementServiceServer(server, svcBiller.NewBillerService(*ucBiller.NewBillerUsecase(clientBiller.NewBillerClient("https://phoenix-imkas.ottodigital.id/interview/biller/v1/detail"))))
+	protoBiller.RegisterBillerServiceServer(server,
+		svcBiller.NewBillerService(
+			*ucBiller.NewBillerUsecase(
+				clientBiller.NewBillerClient("https://phoenix-imkas.ottodigital.id/interview/biller/v1/detail"),
+				db.NewEMoneyDB(conn.UserDB, conn.EMoneyDB),
+			),
+		),
+	)
 }

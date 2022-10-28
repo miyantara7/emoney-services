@@ -3,6 +3,7 @@ package db
 // DatabaseList :
 type DatabaseList struct {
 	UserManagement Database
+	EMoney         Database
 }
 
 // Database :
