@@ -1,13 +1,10 @@
 module github.com/vins7/emoney-service
 
-replace github.com/vins7/module-protos => ./../module-protos
-
 require (
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/golang-jwt/jwt/v4 v4.4.1
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/vins7/module-protos v1.0.5
-	golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4
+	github.com/vins7/module-protos v1.0.7
 	google.golang.org/grpc v1.47.0
 	gorm.io/driver/mysql v1.4.3
 	gorm.io/gorm v1.23.8
@@ -41,7 +38,7 @@ require (
 	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/genproto v0.0.0-20220519153652-3a47de7e79bd // indirect
-	google.golang.org/protobuf v1.28.0
+	google.golang.org/protobuf v1.28.0 // indirect
 )
 
 go 1.18
