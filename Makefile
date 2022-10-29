@@ -13,7 +13,7 @@ setup:
 	@echo " --- Setup and generate configuration --- "
 	@cp config/example/mysql.yml.example config/db/mysql.yml
 	@cp config/example/server.yml.example config/server/server.yml
-	@cp config/example/client.yml.example config/server/client.yml
+	@cp config/example/client.yml.example config/client/client.yml
 
 build-docker: build
 	@docker build --tag emoney-services .
