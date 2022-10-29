@@ -1,0 +1,3 @@
+client:
+  listBiller: 'https://phoenix-imkas.ottodigital.id/interview/biller/v1/list'
+  detailBiller: 'https://phoenix-imkas.ottodigital.id/interview/biller/v1/detail'
