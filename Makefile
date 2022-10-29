@@ -1,4 +1,4 @@
-build: tidy
+build: setup
 	@echo "--- Building binary file ---"
 	@go build -o ./main server/grpc/main.go
 
@@ -8,3 +8,15 @@ grpc:
 
 tidy:
 	@go mod tidy
+
+setup:
+	@echo " --- Setup and generate configuration --- "
+	@cp config/example/mysql.yml.example config/db/mysql.yml
+	@cp config/example/server.yml.example config/server/server.yml
+	@cp config/example/client.yml.example config/server/client.yml
+
+build-docker: build
+	@docker build --tag emoney-services .
+
+protoc-docker:
+	@docker container create --name emoney-services -p 9903:9903/tcp emoney-services
