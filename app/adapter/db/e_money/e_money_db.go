@@ -120,6 +120,15 @@ func (u *EMoneyDB) InsertTransactionHistory(req *entity.TransactionHistory) erro
 
 func (u *EMoneyDB) TransactionHistory(req *model.GetTrxHist) ([]*entity.TransactionHistory, error) {
 
+	var data *entity.EMoney
+	if err := u.dbEMoney.Debug().Where("no_kartu = ? and user_id = ?", req.NoKartu, req.UserId).
+		First(&data).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, status.Errorf(codes.NotFound, "no kartu not exist !")
+		}
+		return nil, status.Errorf(codes.NotFound, err.Error())
+	}
+
 	list := []*entity.TransactionHistory{}
 	if err := u.dbEMoney.Debug().Where("user_id = ? and no_kartu = ?", req.UserId, req.NoKartu).
 		Order("created_date DESC").
