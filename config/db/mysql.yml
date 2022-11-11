@@ -1,12 +1,12 @@
 database:
   userManagement:
-    host: localhost
+    host: mysql-service
     port: 3306
     username: root
     password: root
     dbname: user_services
   eMoney:
-    host: localhost
+    host: mysql-service
     port: 3306
     username: root
     password: root
